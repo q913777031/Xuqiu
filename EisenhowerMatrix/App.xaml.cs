@@ -17,20 +17,32 @@ public partial class App : Application
     {
         try
         {
-            // Initialize database
             var freeSql = AppDbContext.Initialize();
 
-            // Build DI container
             var builder = new ContainerBuilder();
             builder.RegisterInstance(freeSql).As<IFreeSql>().SingleInstance();
             builder.RegisterType<TaskService>().SingleInstance();
+            builder.RegisterType<BoardService>().SingleInstance();
+            builder.RegisterType<TagService>().SingleInstance();
+            builder.RegisterType<PomodoroService>().SingleInstance();
+            builder.RegisterType<SettingsService>().SingleInstance();
+            builder.RegisterType<TemplateService>().SingleInstance();
+            builder.RegisterType<UndoRedoService>().SingleInstance();
+            builder.RegisterType<CsvService>().SingleInstance();
+            builder.RegisterType<AnalyticsService>().SingleInstance();
             builder.RegisterType<MainViewModel>().SingleInstance();
             _container = builder.Build();
 
-            // Create and show main window
             var mainVm = _container.Resolve<MainViewModel>();
             var mainWindow = new MainWindow();
             mainWindow.SetViewModel(mainVm);
+
+            // Apply saved theme
+            var settings = _container.Resolve<SettingsService>();
+            var theme = settings.Theme;
+            if (theme == "Dark")
+                AntDesign.WPF.ThemeHelper.SetBaseTheme(AntDesign.WPF.BaseTheme.Dark);
+
             mainWindow.Show();
         }
         catch (Exception ex)

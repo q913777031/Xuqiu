@@ -3,73 +3,168 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:antd="https://antdesign.wpf/"
         xmlns:models="clr-namespace:EisenhowerMatrix.Models"
+        xmlns:converters="clr-namespace:EisenhowerMatrix.Converters"
         Title="{Binding DialogTitle}"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         SizeToContent="Height"
-        Width="440"
+        Width="480"
+        MaxHeight="700"
         Background="{DynamicResource AntDesign.Brush.Bg.Container}"
         ShowInTaskbar="False">
 
-    <Border Padding="24,16">
-        <StackPanel>
-            <!-- Title -->
-            <TextBlock Text="标题 *" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
-                     Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"/>
-            <TextBlock Text="{Binding TitleError}" Foreground="#EF4444"
-                       FontSize="{DynamicResource AntDesign.FontSize.SM}" Margin="0,2,0,0"/>
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
 
-            <!-- Quadrant -->
-            <TextBlock Text="象限" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <ComboBox SelectedValue="{Binding Quadrant}"
-                      SelectedValuePath="Tag">
-                <ComboBoxItem Content="Q1 重要&amp;紧急" Tag="{x:Static models:QuadrantType.Q1}"/>
-                <ComboBoxItem Content="Q2 重要&amp;不紧急" Tag="{x:Static models:QuadrantType.Q2}"/>
-                <ComboBoxItem Content="Q3 不重要&amp;紧急" Tag="{x:Static models:QuadrantType.Q3}"/>
-                <ComboBoxItem Content="Q4 不重要&amp;不紧急" Tag="{x:Static models:QuadrantType.Q4}"/>
-            </ComboBox>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Border Padding="24,16">
+            <StackPanel>
+                <!-- Template Selection -->
+                <StackPanel Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                    <TextBlock Text="从模板创建" Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               FontSize="{DynamicResource AntDesign.FontSize.SM}" Margin="0,0,0,4"/>
+                    <ItemsControl ItemsSource="{Binding AvailableTemplates}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}" Margin="0,0,4,4"
+                                        Style="{StaticResource AntDesignDefaultButton}" Padding="8,2"
+                                        Command="{Binding DataContext.ApplyTemplateCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
 
-            <!-- Owner -->
-            <TextBlock Text="负责人" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <TextBox Text="{Binding Owner, UpdateSourceTrigger=PropertyChanged}"
-                     Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"/>
+                <!-- Title -->
+                <TextBlock Text="标题 *" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                           FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
+                <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                         Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"/>
+                <TextBlock Text="{Binding TitleError}" Foreground="#EF4444"
+                           FontSize="{DynamicResource AntDesign.FontSize.SM}" Margin="0,2,0,0"/>
 
-            <!-- Estimate -->
-            <TextBlock Text="预估工期" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <TextBox Text="{Binding Estimate, UpdateSourceTrigger=PropertyChanged}"
-                     Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"
-                     ToolTip="如：3天、1周"/>
+                <!-- Quadrant -->
+                <TextBlock Text="象限" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                           FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
+                <ComboBox SelectedValue="{Binding Quadrant}"
+                          SelectedValuePath="Tag">
+                    <ComboBoxItem Content="Q1 重要&amp;紧急" Tag="{x:Static models:QuadrantType.Q1}"/>
+                    <ComboBoxItem Content="Q2 重要&amp;不紧急" Tag="{x:Static models:QuadrantType.Q2}"/>
+                    <ComboBoxItem Content="Q3 不重要&amp;紧急" Tag="{x:Static models:QuadrantType.Q3}"/>
+                    <ComboBoxItem Content="Q4 不重要&amp;不紧急" Tag="{x:Static models:QuadrantType.Q4}"/>
+                </ComboBox>
 
-            <!-- Status -->
-            <TextBlock Text="状态" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <ComboBox SelectedValue="{Binding Status}"
-                      SelectedValuePath="Tag">
-                <ComboBoxItem Content="未开始" Tag="{x:Static models:TaskItemStatus.NotStarted}"/>
-                <ComboBoxItem Content="进行中" Tag="{x:Static models:TaskItemStatus.InProgress}"/>
-                <ComboBoxItem Content="已完成" Tag="{x:Static models:TaskItemStatus.Completed}"/>
-                <ComboBoxItem Content="阻塞" Tag="{x:Static models:TaskItemStatus.Blocked}"/>
-            </ComboBox>
+                <!-- Owner & Estimate Row -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="负责人" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                   FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding Owner, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="预估工期" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                   FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,0,0,4"/>
+                        <TextBox Text="{Binding Estimate, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"
+                                 ToolTip="如：3天、1周"/>
+                    </StackPanel>
+                </Grid>
 
-            <!-- Blocker -->
-            <TextBlock Text="阻塞点" Foreground="{DynamicResource AntDesign.Brush.Text}"
-                       FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
-            <TextBox Text="{Binding Blocker, UpdateSourceTrigger=PropertyChanged}"
-                     Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"
-                     AcceptsReturn="True" TextWrapping="Wrap" Height="60"/>
+                <!-- Status & Due Date Row -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="状态" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                   FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,0,0,4"/>
+                        <ComboBox SelectedValue="{Binding Status}"
+                                  SelectedValuePath="Tag">
+                            <ComboBoxItem Content="未开始" Tag="{x:Static models:TaskItemStatus.NotStarted}"/>
+                            <ComboBoxItem Content="进行中" Tag="{x:Static models:TaskItemStatus.InProgress}"/>
+                            <ComboBoxItem Content="已完成" Tag="{x:Static models:TaskItemStatus.Completed}"/>
+                            <ComboBoxItem Content="阻塞" Tag="{x:Static models:TaskItemStatus.Blocked}"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="截止日期" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                   FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,0,0,4"/>
+                        <DatePicker SelectedDate="{Binding DueDate}" Padding="6,4"/>
+                    </StackPanel>
+                </Grid>
 
-            <!-- Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-                <Button Content="取消" Click="Cancel_Click"
-                        Style="{StaticResource AntDesignDefaultButton}" Margin="0,0,8,0"/>
-                <Button Content="保存" Click="Save_Click"
-                        Style="{StaticResource AntDesignPrimaryButton}"/>
+                <!-- Blocker -->
+                <TextBlock Text="阻塞点" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                           FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
+                <TextBox Text="{Binding Blocker, UpdateSourceTrigger=PropertyChanged}"
+                         Padding="8,6" FontSize="{DynamicResource AntDesign.FontSize}"
+                         AcceptsReturn="True" TextWrapping="Wrap" Height="50"/>
+
+                <!-- Tags -->
+                <TextBlock Text="标签" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                           FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
+                <ItemsControl ItemsSource="{Binding TagItems}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Tag.Name}" IsChecked="{Binding IsSelected}"
+                                      Margin="0,0,12,4" FontSize="{DynamicResource AntDesign.FontSize}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Subtasks -->
+                <TextBlock Text="子任务" Foreground="{DynamicResource AntDesign.Brush.Text}"
+                           FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,8,0,4"/>
+                <ItemsControl ItemsSource="{Binding SubtaskTitles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="0,2">
+                                <Button DockPanel.Dock="Right" Content="&#x2716;" Padding="4,2"
+                                        Style="{StaticResource IconButtonStyle}" Foreground="#EF4444" Opacity="1"
+                                        Command="{Binding DataContext.RemoveSubtaskCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"/>
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="4,0"
+                                           FontSize="{DynamicResource AntDesign.FontSize}"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <DockPanel Margin="0,4,0,0">
+                    <Button DockPanel.Dock="Right" Content="添加" Padding="8,4"
+                            Style="{StaticResource AntDesignDefaultButton}"
+                            Command="{Binding AddSubtaskCommand}"/>
+                    <TextBox Text="{Binding NewSubtaskTitle, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="8,4" FontSize="{DynamicResource AntDesign.FontSize}" Margin="0,0,4,0"/>
+                </DockPanel>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button Content="取消" Click="Cancel_Click"
+                            Style="{StaticResource AntDesignDefaultButton}" Margin="0,0,8,0"/>
+                    <Button Content="保存" Click="Save_Click"
+                            Style="{StaticResource AntDesignPrimaryButton}"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </Border>
+        </Border>
+    </ScrollViewer>
 </Window>

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using EisenhowerMatrix.Models;
@@ -86,13 +87,65 @@ public partial class TaskItemViewModel : ObservableObject
 
     public DateTime CreatedAt => _model.CreatedAt;
 
+    // === v2.0 Properties ===
+
+    public DateTime? DueDate
+    {
+        get => _model.DueDate;
+        set { _model.DueDate = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasDueDate)); OnPropertyChanged(nameof(IsOverdue)); OnPropertyChanged(nameof(DueDateText)); }
+    }
+
+    public bool HasDueDate => DueDate.HasValue;
+
+    public bool IsOverdue => DueDate.HasValue && DueDate < DateTime.Now && Status != TaskItemStatus.Completed;
+
+    public string DueDateText => DueDate?.ToString("MM-dd") ?? "";
+
+    public int PomodoroCount
+    {
+        get => _model.PomodoroCount;
+        set { _model.PomodoroCount = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasPomodoro)); }
+    }
+
+    public bool HasPomodoro => PomodoroCount > 0;
+
+    [ObservableProperty] private ObservableCollection<Tag> _tagsList = new();
+
+    public bool HasTags => TagsList.Count > 0;
+
+    [ObservableProperty] private int _subtaskTotal;
+    [ObservableProperty] private int _subtaskCompleted;
+
+    public bool HasSubtasks => SubtaskTotal > 0;
+    public string SubtaskText => $"{SubtaskCompleted}/{SubtaskTotal}";
+
+    partial void OnTagsListChanged(ObservableCollection<Tag> value)
+    {
+        OnPropertyChanged(nameof(HasTags));
+    }
+
+    partial void OnSubtaskTotalChanged(int value)
+    {
+        OnPropertyChanged(nameof(HasSubtasks));
+        OnPropertyChanged(nameof(SubtaskText));
+    }
+
+    partial void OnSubtaskCompletedChanged(int value)
+    {
+        OnPropertyChanged(nameof(SubtaskText));
+    }
+
     // Commands are set by MainViewModel
     public Action<TaskItemViewModel>? EditAction { get; set; }
     public Action<TaskItemViewModel>? DeleteAction { get; set; }
+    public Action<TaskItemViewModel>? StartPomodoroAction { get; set; }
 
     [RelayCommand]
     private void Edit() => EditAction?.Invoke(this);
 
     [RelayCommand]
     private void Delete() => DeleteAction?.Invoke(this);
+
+    [RelayCommand]
+    private void StartPomodoro() => StartPomodoroAction?.Invoke(this);
 }

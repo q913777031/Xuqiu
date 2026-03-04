@@ -9,7 +9,8 @@
         Width="1200" Height="800"
         MinWidth="900" MinHeight="600"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource AntDesign.Brush.Bg.Layout}">
+        Background="{DynamicResource AntDesign.Brush.Bg.Layout}"
+        KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVis"/>
@@ -17,208 +18,422 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- Row 0: Statistics Bar -->
-        <Border Grid.Row="0" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
-                Padding="16,12"
-                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <!-- Total -->
-                <Border Background="{DynamicResource AntDesign.Brush.Primary.Bg}"
-                        CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="20,12" Margin="4,0">
-                    <StackPanel>
-                        <TextBlock Text="总计" FontSize="{DynamicResource AntDesign.FontSize.SM}"
-                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
-                        <TextBlock Text="{Binding TotalCount}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{DynamicResource AntDesign.Brush.Text}"/>
-                    </StackPanel>
-                </Border>
-                <!-- InProgress -->
-                <Border Background="#EFF6FF"
-                        CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="20,12" Margin="4,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <antd:Badge Dot="True" Status="Processing" Margin="0,0,6,0">
-                                <Border Width="1" Height="1"/>
-                            </antd:Badge>
-                            <TextBlock Text="进行中" FontSize="{DynamicResource AntDesign.FontSize.SM}"
-                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding InProgressCount}" FontSize="24" FontWeight="Bold"
-                                   Foreground="#3B82F6"/>
-                    </StackPanel>
-                </Border>
-                <!-- Completed -->
-                <Border Background="#F0FDF4"
-                        CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="20,12" Margin="4,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <antd:Badge Dot="True" Status="Success" Margin="0,0,6,0">
-                                <Border Width="1" Height="1"/>
-                            </antd:Badge>
-                            <TextBlock Text="已完成" FontSize="{DynamicResource AntDesign.FontSize.SM}"
-                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding CompletedCount}" FontSize="24" FontWeight="Bold"
-                                   Foreground="#10B981"/>
-                    </StackPanel>
-                </Border>
-                <!-- Blocked -->
-                <Border Background="#FEF2F2"
-                        CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="20,12" Margin="4,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <antd:Badge Dot="True" Status="Error" Margin="0,0,6,0">
-                                <Border Width="1" Height="1"/>
-                            </antd:Badge>
-                            <TextBlock Text="阻塞" FontSize="{DynamicResource AntDesign.FontSize.SM}"
-                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding BlockedCount}" FontSize="24" FontWeight="Bold"
-                                   Foreground="#EF4444"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </Border>
-
-        <!-- Row 1: Filter Bar + View Toggle -->
-        <Border Grid.Row="1" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
-                Padding="16,8"
-                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
-            <DockPanel>
-                <!-- View Toggle -->
-                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
-                    <Button Style="{StaticResource AntDesignDefaultButton}"
-                            Content="&#x2B1A; 四象限 / &#x2630; 列表"
-                            Command="{Binding ToggleViewCommand}"/>
-                </StackPanel>
-
-                <!-- Filter Buttons -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="筛选:" VerticalAlignment="Center" Margin="0,0,8,0"
-                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
-                               FontSize="{DynamicResource AntDesign.FontSize}"/>
-                    <Button Content="全部" Style="{StaticResource AntDesignDefaultButton}"
-                            Margin="0,0,4,0"
-                            Command="{Binding SetFilterCommand}" CommandParameter=""/>
-                    <Button Content="未开始" Style="{StaticResource AntDesignDefaultButton}"
-                            Margin="0,0,4,0"
-                            Command="{Binding SetFilterCommand}" CommandParameter="NotStarted"/>
-                    <Button Content="进行中" Style="{StaticResource AntDesignPrimaryButton}"
-                            Margin="0,0,4,0"
-                            Command="{Binding SetFilterCommand}" CommandParameter="InProgress"/>
-                    <Button Content="已完成" Style="{StaticResource AntDesignDefaultButton}"
-                            Margin="0,0,4,0"
-                            Command="{Binding SetFilterCommand}" CommandParameter="Completed"/>
-                    <Button Content="阻塞" Style="{StaticResource AntDesignDangerDefaultButton}"
-                            Margin="0,0,4,0"
-                            Command="{Binding SetFilterCommand}" CommandParameter="Blocked"/>
-                </StackPanel>
-            </DockPanel>
-        </Border>
-
-        <!-- Row 2: Content Area -->
-        <Grid Grid.Row="2" Margin="8">
-
-            <!-- Quadrant View -->
-            <Grid Visibility="{Binding IsQuadrantView, Converter={StaticResource BoolToVis}}">
+        <!-- Left Sidebar -->
+        <Border Grid.Column="0" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,1,0">
+            <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
 
-                <views:QuadrantPanel Grid.Row="0" Grid.Column="0"
-                                     Quadrant="Q1"
-                                     TasksSource="{Binding Q1Tasks}"
-                                     TaskCount="{Binding Q1Count}"/>
+                <!-- App Title -->
+                <Border Grid.Row="0" Padding="16,14"
+                        BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+                    <TextBlock Text="四象限任务管理" FontSize="16" FontWeight="Bold"
+                               Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                </Border>
 
-                <views:QuadrantPanel Grid.Row="0" Grid.Column="1"
-                                     Quadrant="Q2"
-                                     TasksSource="{Binding Q2Tasks}"
-                                     TaskCount="{Binding Q2Count}"/>
+                <!-- Boards Header -->
+                <Border Grid.Row="1" Padding="12,8">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Content="+" FontSize="14"
+                                Style="{StaticResource IconButtonStyle}" Padding="4,2"
+                                Command="{Binding AddBoardCommand}" ToolTip="新建看板"/>
+                        <TextBlock Text="看板" FontSize="{DynamicResource AntDesign.FontSize}"
+                                   FontWeight="Medium" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                    </DockPanel>
+                </Border>
 
-                <views:QuadrantPanel Grid.Row="1" Grid.Column="0"
-                                     Quadrant="Q3"
-                                     TasksSource="{Binding Q3Tasks}"
-                                     TaskCount="{Binding Q3Count}"/>
+                <!-- Board List -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Boards}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}" Margin="4,1"
+                                        HorizontalContentAlignment="Left" Padding="12,8"
+                                        Style="{StaticResource AntDesignTextButton}"
+                                        Command="{Binding DataContext.SwitchBoardCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
-                <views:QuadrantPanel Grid.Row="1" Grid.Column="1"
-                                     Quadrant="Q4"
-                                     TasksSource="{Binding Q4Tasks}"
-                                     TaskCount="{Binding Q4Count}"/>
+                <!-- Pomodoro Panel -->
+                <Border Grid.Row="3" Padding="12,8"
+                        BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,1,0,0"
+                        Visibility="{Binding IsPomodoroRunning, Converter={StaticResource BoolToVis}}">
+                    <StackPanel>
+                        <TextBlock Text="番茄钟" FontWeight="Medium" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding PomodoroTimeDisplay}" FontSize="28" FontWeight="Bold"
+                                   HorizontalAlignment="Center" Foreground="#EF4444" Margin="0,4"/>
+                        <TextBlock Text="{Binding PomodoroTaskTitle}" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                   HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0">
+                            <Button Content="暂停" Style="{StaticResource AntDesignDefaultButton}"
+                                    Command="{Binding PausePomodoroCommand}" Margin="0,0,4,0" Padding="8,2"/>
+                            <Button Content="停止" Style="{StaticResource AntDesignDangerDefaultButton}"
+                                    Command="{Binding StopPomodoroCommand}" Padding="8,2"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Bottom Actions -->
+                <Border Grid.Row="4" Padding="8"
+                        BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,1,0,0">
+                    <StackPanel>
+                        <TextBlock Margin="8,4">
+                            <Run Text="今日番茄: " Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                            <Run Text="{Binding TodayPomodoroCount}" FontWeight="Bold"
+                                 Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                        </TextBlock>
+                        <Button Content="切换暗色模式" Style="{StaticResource AntDesignTextButton}"
+                                HorizontalContentAlignment="Left" Padding="8,4"
+                                Command="{Binding ToggleDarkModeCommand}"/>
+                    </StackPanel>
+                </Border>
             </Grid>
+        </Border>
 
-            <!-- List View -->
-            <antd:Card Visibility="{Binding IsQuadrantView, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
-                <DataGrid ItemsSource="{Binding AllTasks}"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          CanUserDeleteRows="False"
-                          IsReadOnly="False"
-                          SelectionMode="Single"
-                          GridLinesVisibility="Horizontal"
-                          BorderThickness="0"
-                          FontSize="{DynamicResource AntDesign.FontSize}"
-                          HeadersVisibility="Column">
+        <!-- Right Main Area -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                    <DataGrid.Columns>
-                        <!-- Quadrant -->
-                        <DataGridTextColumn Header="象限" Binding="{Binding Quadrant}" Width="100" IsReadOnly="True"/>
+            <!-- Row 0: Statistics Bar -->
+            <Border Grid.Row="0" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    Padding="16,10"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+                <DockPanel>
+                    <!-- Right side: Search -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBox x:Name="SearchBox" Width="180" Padding="6,4"
+                                 FontSize="{DynamicResource AntDesign.FontSize}"
+                                 KeyDown="SearchBox_KeyDown"
+                                 Tag="搜索任务..."/>
+                        <Button Content="搜索" Style="{StaticResource AntDesignDefaultButton}"
+                                Margin="4,0,0,0" Padding="10,4"
+                                Click="SearchButton_Click"/>
+                    </StackPanel>
 
-                        <!-- Title -->
-                        <DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="*" IsReadOnly="True"/>
+                    <!-- Stats -->
+                    <StackPanel Orientation="Horizontal">
+                        <!-- Total -->
+                        <Border Background="{DynamicResource AntDesign.Brush.Primary.Bg}"
+                                CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="总计" FontSize="11"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                                <TextBlock Text="{Binding TotalCount}" FontSize="20" FontWeight="Bold"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- InProgress -->
+                        <Border Background="#EFF6FF" CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="进行中" FontSize="11" Foreground="#6B7280"/>
+                                <TextBlock Text="{Binding InProgressCount}" FontSize="20" FontWeight="Bold" Foreground="#3B82F6"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- Completed -->
+                        <Border Background="#F0FDF4" CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="已完成" FontSize="11" Foreground="#6B7280"/>
+                                <TextBlock Text="{Binding CompletedCount}" FontSize="20" FontWeight="Bold" Foreground="#10B981"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- Blocked -->
+                        <Border Background="#FEF2F2" CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="阻塞" FontSize="11" Foreground="#6B7280"/>
+                                <TextBlock Text="{Binding BlockedCount}" FontSize="20" FontWeight="Bold" Foreground="#EF4444"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- Overdue -->
+                        <Border Background="#FEF3C7" CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="逾期" FontSize="11" Foreground="#92400E"/>
+                                <TextBlock Text="{Binding OverdueCount}" FontSize="20" FontWeight="Bold" Foreground="#D97706"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- Q2 -->
+                        <Border Background="#FFF7ED" CornerRadius="{DynamicResource AntDesign.CornerRadius}" Padding="14,8" Margin="0,0,6,0">
+                            <StackPanel>
+                                <TextBlock Text="Q2占比" FontSize="11" Foreground="#6B7280"/>
+                                <TextBlock FontSize="20" FontWeight="Bold" Foreground="#F97316">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}%">
+                                            <Binding Path="Q2Percentage"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
 
-                        <!-- Owner -->
-                        <DataGridTextColumn Header="负责人" Binding="{Binding Owner}" Width="100" IsReadOnly="True"/>
+            <!-- Row 1: Filter Bar + View Toggle -->
+            <Border Grid.Row="1" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    Padding="12,6"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+                <DockPanel>
+                    <!-- Right: View Toggle + Actions -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
+                        <Button Content="撤销" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding UndoCommand}" Padding="8,3" Margin="0,0,4,0"
+                                IsEnabled="{Binding CanUndo}" ToolTip="Ctrl+Z"/>
+                        <Button Content="重做" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding RedoCommand}" Padding="8,3" Margin="0,0,8,0"
+                                IsEnabled="{Binding CanRedo}" ToolTip="Ctrl+Y"/>
+                        <Button Content="导出" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding ExportCsvCommand}" Padding="8,3" Margin="0,0,4,0"/>
+                        <Button Content="导入" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding ImportCsvCommand}" Padding="8,3" Margin="0,0,8,0"/>
+                        <Button Content="四象限" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding ShowQuadrantViewCommand}" Padding="8,3" Margin="0,0,2,0"/>
+                        <Button Content="列表" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding ShowListViewCommand}" Padding="8,3" Margin="0,0,2,0"/>
+                        <Button Content="统计" Style="{StaticResource AntDesignDefaultButton}"
+                                Command="{Binding ShowAnalyticsViewCommand}" Padding="8,3"/>
+                    </StackPanel>
 
-                        <!-- Estimate -->
-                        <DataGridTextColumn Header="工期" Binding="{Binding Estimate}" Width="80" IsReadOnly="True"/>
+                    <!-- Filter Buttons -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="筛选:" VerticalAlignment="Center" Margin="0,0,6,0"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                                   FontSize="{DynamicResource AntDesign.FontSize}"/>
+                        <Button Content="全部" Style="{StaticResource AntDesignDefaultButton}"
+                                Margin="0,0,3,0" Padding="8,3"
+                                Command="{Binding SetFilterCommand}" CommandParameter=""/>
+                        <Button Content="未开始" Style="{StaticResource AntDesignDefaultButton}"
+                                Margin="0,0,3,0" Padding="8,3"
+                                Command="{Binding SetFilterCommand}" CommandParameter="NotStarted"/>
+                        <Button Content="进行中" Style="{StaticResource AntDesignPrimaryButton}"
+                                Margin="0,0,3,0" Padding="8,3"
+                                Command="{Binding SetFilterCommand}" CommandParameter="InProgress"/>
+                        <Button Content="已完成" Style="{StaticResource AntDesignDefaultButton}"
+                                Margin="0,0,3,0" Padding="8,3"
+                                Command="{Binding SetFilterCommand}" CommandParameter="Completed"/>
+                        <Button Content="阻塞" Style="{StaticResource AntDesignDangerDefaultButton}"
+                                Padding="8,3"
+                                Command="{Binding SetFilterCommand}" CommandParameter="Blocked"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
 
-                        <!-- Status (editable combo) -->
-                        <DataGridTemplateColumn Header="状态" Width="110">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ComboBox SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedValuePath="Tag"
-                                              BorderThickness="0" Background="Transparent"
-                                              SelectionChanged="StatusCombo_SelectionChanged">
-                                        <ComboBoxItem Content="未开始" Tag="{x:Static models:TaskItemStatus.NotStarted}"/>
-                                        <ComboBoxItem Content="进行中" Tag="{x:Static models:TaskItemStatus.InProgress}"/>
-                                        <ComboBoxItem Content="已完成" Tag="{x:Static models:TaskItemStatus.Completed}"/>
-                                        <ComboBoxItem Content="阻塞" Tag="{x:Static models:TaskItemStatus.Blocked}"/>
-                                    </ComboBox>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+            <!-- Row 2: Content Area -->
+            <Grid Grid.Row="2" Margin="8">
 
-                        <!-- Blocker -->
-                        <DataGridTextColumn Header="阻塞点" Binding="{Binding Blocker}" Width="150" IsReadOnly="True"/>
+                <!-- Quadrant View -->
+                <Grid Visibility="{Binding IsQuadrantView, Converter={StaticResource BoolToVis}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <!-- Actions -->
-                        <DataGridTemplateColumn Header="操作" Width="80">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="&#x270E;" Style="{StaticResource IconButtonStyle}"
-                                                Command="{Binding EditCommand}" Opacity="1"/>
-                                        <Button Content="&#x2716;" Style="{StaticResource IconButtonStyle}"
-                                                Command="{Binding DeleteCommand}" Foreground="#EF4444" Opacity="1"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </antd:Card>
+                    <views:QuadrantPanel Grid.Row="0" Grid.Column="0"
+                                         Quadrant="Q1"
+                                         TasksSource="{Binding Q1Tasks}"
+                                         TaskCount="{Binding Q1Count}"/>
+
+                    <views:QuadrantPanel Grid.Row="0" Grid.Column="1"
+                                         Quadrant="Q2"
+                                         TasksSource="{Binding Q2Tasks}"
+                                         TaskCount="{Binding Q2Count}"/>
+
+                    <views:QuadrantPanel Grid.Row="1" Grid.Column="0"
+                                         Quadrant="Q3"
+                                         TasksSource="{Binding Q3Tasks}"
+                                         TaskCount="{Binding Q3Count}"/>
+
+                    <views:QuadrantPanel Grid.Row="1" Grid.Column="1"
+                                         Quadrant="Q4"
+                                         TasksSource="{Binding Q4Tasks}"
+                                         TaskCount="{Binding Q4Count}"/>
+                </Grid>
+
+                <!-- List View -->
+                <Border Visibility="{Binding IsListView, Converter={StaticResource BoolToVis}}"
+                        Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                        CornerRadius="{DynamicResource AntDesign.CornerRadius.LG}" Padding="8">
+                    <DataGrid ItemsSource="{Binding AllTasks}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="False"
+                              SelectionMode="Single"
+                              GridLinesVisibility="Horizontal"
+                              BorderThickness="0"
+                              FontSize="{DynamicResource AntDesign.FontSize}"
+                              HeadersVisibility="Column">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="象限" Binding="{Binding Quadrant}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="负责人" Binding="{Binding Owner}" Width="90" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="工期" Binding="{Binding Estimate}" Width="70" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="截止日期" Binding="{Binding DueDateText}" Width="80" IsReadOnly="True"/>
+
+                            <!-- Status (editable combo) -->
+                            <DataGridTemplateColumn Header="状态" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Tag"
+                                                  BorderThickness="0" Background="Transparent"
+                                                  SelectionChanged="StatusCombo_SelectionChanged">
+                                            <ComboBoxItem Content="未开始" Tag="{x:Static models:TaskItemStatus.NotStarted}"/>
+                                            <ComboBoxItem Content="进行中" Tag="{x:Static models:TaskItemStatus.InProgress}"/>
+                                            <ComboBoxItem Content="已完成" Tag="{x:Static models:TaskItemStatus.Completed}"/>
+                                            <ComboBoxItem Content="阻塞" Tag="{x:Static models:TaskItemStatus.Blocked}"/>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="阻塞点" Binding="{Binding Blocker}" Width="120" IsReadOnly="True"/>
+
+                            <!-- Actions -->
+                            <DataGridTemplateColumn Header="操作" Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="&#x270E;" Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding EditCommand}" Opacity="1"/>
+                                            <Button Content="&#x2716;" Style="{StaticResource IconButtonStyle}"
+                                                    Command="{Binding DeleteCommand}" Foreground="#EF4444" Opacity="1"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <!-- Analytics View -->
+                <ScrollViewer Visibility="{Binding IsAnalyticsView, Converter={StaticResource BoolToVis}}"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="8">
+                        <!-- Quadrant Distribution -->
+                        <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                                CornerRadius="{DynamicResource AntDesign.CornerRadius.LG}" Padding="16" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="象限分布" FontSize="16" FontWeight="Bold"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}" Margin="0,0,0,12"/>
+                                <ItemsControl ItemsSource="{Binding QuadrantStats}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Quadrant}" FontWeight="Medium"
+                                                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                                                <Border Grid.Column="1" Height="20" CornerRadius="4" Background="#E5E7EB" Margin="8,0">
+                                                    <Border HorizontalAlignment="Left" CornerRadius="4"
+                                                            Background="#3B82F6"
+                                                            Width="{Binding Percentage, Converter={StaticResource BoolToVis}}"
+                                                            MaxWidth="300"/>
+                                                </Border>
+                                                <TextBlock Grid.Column="2" Text="{Binding Count}" HorizontalAlignment="Center"
+                                                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                                                <TextBlock Grid.Column="3" HorizontalAlignment="Center"
+                                                           Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0}%">
+                                                            <Binding Path="Percentage"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Completion Trend -->
+                        <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                                CornerRadius="{DynamicResource AntDesign.CornerRadius.LG}" Padding="16" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="30天完成趋势" FontSize="16" FontWeight="Bold"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}" Margin="0,0,0,12"/>
+                                <ItemsControl ItemsSource="{Binding CompletionTrend}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="1"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                                <Border Width="8" MinHeight="2" CornerRadius="2,2,0,0"
+                                                        Background="#3B82F6" VerticalAlignment="Bottom"
+                                                        Height="{Binding CompletedCount, Converter={StaticResource BoolToVis}}"
+                                                        ToolTip="{Binding Date, StringFormat='{}{0:MM-dd}: '}"
+                                                        Margin="0,0,0,2"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Owner Workload -->
+                        <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                                CornerRadius="{DynamicResource AntDesign.CornerRadius.LG}" Padding="16">
+                            <StackPanel>
+                                <TextBlock Text="负责人工作量" FontSize="16" FontWeight="Bold"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}" Margin="0,0,0,12"/>
+                                <ItemsControl ItemsSource="{Binding OwnerWorkload}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Owner}" FontWeight="Medium"
+                                                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                                                <TextBlock Grid.Column="1" Foreground="{DynamicResource AntDesign.Brush.Text}">
+                                                    <Run Text="任务: "/><Run Text="{Binding TaskCount, Mode=OneWay}"/>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="2" Foreground="#10B981">
+                                                    <Run Text="完成: "/><Run Text="{Binding CompletedCount, Mode=OneWay}"/>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

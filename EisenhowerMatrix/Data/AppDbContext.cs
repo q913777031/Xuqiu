@@ -18,8 +18,30 @@ public static class AppDbContext
             .UseAutoSyncStructure(true)
             .Build();
 
-        // Trigger CodeFirst sync
+        // CodeFirst sync all tables
+        _freeSql.CodeFirst.SyncStructure<Board>();
         _freeSql.CodeFirst.SyncStructure<TaskItem>();
+        _freeSql.CodeFirst.SyncStructure<Tag>();
+        _freeSql.CodeFirst.SyncStructure<TaskTag>();
+        _freeSql.CodeFirst.SyncStructure<PomodoroRecord>();
+        _freeSql.CodeFirst.SyncStructure<TaskTemplate>();
+        _freeSql.CodeFirst.SyncStructure<QuadrantConfig>();
+        _freeSql.CodeFirst.SyncStructure<AppSetting>();
+        _freeSql.CodeFirst.SyncStructure<OperationLog>();
+
+        // Seed default board if none exists
+        var boardCount = _freeSql.Select<Board>().Count();
+        if (boardCount == 0)
+        {
+            _freeSql.Insert(new Board
+            {
+                Name = "我的任务",
+                Description = "默认看板",
+                Color = "#3B82F6",
+                SortOrder = 0,
+                CreatedAt = DateTime.Now
+            }).ExecuteAffrows();
+        }
 
         return _freeSql;
     }

@@ -31,4 +31,28 @@ public class TaskItem
 
     [Column(IsNullable = false)]
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    // v2.0
+    public int BoardId { get; set; } = 1;
+
+    public int? ParentId { get; set; }
+
+    public DateTime? DueDate { get; set; }
+
+    public DateTime? ReminderTime { get; set; }
+
+    public int TotalFocusTime { get; set; } = 0;
+
+    public int PomodoroCount { get; set; } = 0;
+
+    public int IsArchived { get; set; } = 0;
+
+    [Navigate(nameof(ParentId))]
+    public TaskItem? Parent { get; set; }
+
+    [Navigate(nameof(ParentId))]
+    public List<TaskItem>? Children { get; set; }
+
+    [Navigate(ManyToMany = typeof(TaskTag))]
+    public List<Tag>? Tags { get; set; }
 }

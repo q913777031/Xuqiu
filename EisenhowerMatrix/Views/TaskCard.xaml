@@ -16,6 +16,9 @@
                MouseLeftButtonDown="Card_MouseDoubleClick">
         <antd:Card.Extra>
             <StackPanel Orientation="Horizontal">
+                <Button Content="&#x25B6;" Style="{StaticResource IconButtonStyle}"
+                        Command="{Binding StartPomodoroCommand}" ToolTip="开始番茄钟"
+                        Foreground="#EF4444" Margin="0,0,2,0"/>
                 <Button Content="&#x270E;" Style="{StaticResource IconButtonStyle}"
                         Command="{Binding EditCommand}" ToolTip="编辑"/>
                 <Button Content="&#x2716;" Style="{StaticResource IconButtonStyle}"
@@ -32,11 +35,22 @@
                        TextDecorations="{Binding IsCompleted, Converter={StaticResource StatusToStrikethrough}}"/>
 
             <!-- Tags Row -->
-            <WrapPanel Margin="0,8,0,0">
+            <WrapPanel Margin="0,6,0,0">
                 <!-- Status Tag -->
                 <antd:Tag PresetColor="{Binding Status, Converter={StaticResource StatusToColor}, ConverterParameter=PresetColor}"
                           Margin="0,0,4,4">
                     <TextBlock Text="{Binding StatusText}" FontSize="{DynamicResource AntDesign.FontSize.SM}"/>
+                </antd:Tag>
+
+                <!-- Due Date Tag -->
+                <antd:Tag Visibility="{Binding HasDueDate, Converter={StaticResource BoolToVis}}"
+                          Margin="0,0,4,4">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                   Foreground="{Binding IsOverdue, Converter={StaticResource BoolToVis}, ConverterParameter=ColorOnly}">
+                            <Run Text="&#x1F4C5; "/><Run Text="{Binding DueDateText, Mode=OneWay}"/>
+                        </TextBlock>
+                    </StackPanel>
                 </antd:Tag>
 
                 <!-- Owner Tag -->
@@ -56,7 +70,40 @@
                         <TextBlock Text="{Binding Estimate}" FontSize="{DynamicResource AntDesign.FontSize.SM}"/>
                     </StackPanel>
                 </antd:Tag>
+
+                <!-- Pomodoro Count -->
+                <antd:Tag Visibility="{Binding HasPomodoro, Converter={StaticResource BoolToVis}}"
+                          PresetColor="Red" Margin="0,0,4,4">
+                    <TextBlock FontSize="{DynamicResource AntDesign.FontSize.SM}">
+                        <Run Text="&#x1F345; "/><Run Text="{Binding PomodoroCount, Mode=OneWay}"/>
+                    </TextBlock>
+                </antd:Tag>
             </WrapPanel>
+
+            <!-- Custom Tags -->
+            <ItemsControl ItemsSource="{Binding TagsList}" Margin="0,2,0,0"
+                          Visibility="{Binding HasTags, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <antd:Tag PresetColor="Blue" Margin="0,0,4,3">
+                            <TextBlock Text="{Binding Name}" FontSize="11"/>
+                        </antd:Tag>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Subtask Progress -->
+            <StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+                        Visibility="{Binding HasSubtasks, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="子任务: " FontSize="11" Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                <TextBlock Text="{Binding SubtaskText}" FontSize="11" FontWeight="Medium"
+                           Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+            </StackPanel>
 
             <!-- Blocker Alert -->
             <antd:Alert Visibility="{Binding HasBlocker, Converter={StaticResource BoolToVis}}"
