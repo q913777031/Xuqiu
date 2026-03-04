@@ -1,0 +1,164 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.MessagePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="700">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Message.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Message.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Message -->
+            <TextBlock Text="{DynamicResource Message.Section}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Message.SectionDesc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Message.ClickToShow}"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               Margin="0,0,0,16" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource AntDesignPrimaryButton}"
+                                Content="{DynamicResource Message.SuccessBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageSuccess_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.InfoBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageInfo_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.WarningBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageWarning_Click" />
+                        <Button Style="{StaticResource AntDesignDangerButton}"
+                                Content="{DynamicResource Message.ErrorBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageError_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.LoadingBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageLoading_Click" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Code: Message -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#5C6370">// C# code-behind:</Run>
+<Run Foreground="#C678DD">MessageService</Run>.Success(<Run Foreground="#98C379">"Operation completed!"</Run>);
+<Run Foreground="#C678DD">MessageService</Run>.Info(<Run Foreground="#98C379">"Informational message."</Run>);
+<Run Foreground="#C678DD">MessageService</Run>.Warning(<Run Foreground="#98C379">"Please review."</Run>);
+<Run Foreground="#C678DD">MessageService</Run>.Error(<Run Foreground="#98C379">"An error occurred."</Run>);
+<Run Foreground="#C678DD">MessageService</Run>.Loading(<Run Foreground="#98C379">"Loading..."</Run>, duration: <Run Foreground="#D19A66">2</Run>);</TextBlock>
+            </Expander>
+
+            <!-- Section: Notification -->
+            <TextBlock Text="{DynamicResource Message.Notification}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Message.NotificationDesc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Message.NotifyClick}"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               Margin="0,0,0,16" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource AntDesignPrimaryButton}"
+                                Content="{DynamicResource Message.NotifySuccess}"
+                                Margin="0,0,8,8"
+                                Click="NotifySuccess_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.NotifyInfo}"
+                                Margin="0,0,8,8"
+                                Click="NotifyInfo_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.NotifyWarning}"
+                                Margin="0,0,8,8"
+                                Click="NotifyWarning_Click" />
+                        <Button Style="{StaticResource AntDesignDangerButton}"
+                                Content="{DynamicResource Message.NotifyError}"
+                                Margin="0,0,8,8"
+                                Click="NotifyError_Click" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Code: Notification -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#5C6370">// C# code-behind:</Run>
+<Run Foreground="#C678DD">NotificationService</Run>.Success(
+    <Run Foreground="#98C379">"Task Completed"</Run>,
+    <Run Foreground="#98C379">"Your export has finished."</Run>);
+<Run Foreground="#C678DD">NotificationService</Run>.Error(
+    <Run Foreground="#98C379">"Connection Failed"</Run>,
+    <Run Foreground="#98C379">"Unable to connect to the server."</Run>);</TextBlock>
+            </Expander>
+
+            <!-- Section: Custom Duration -->
+            <TextBlock Text="{DynamicResource Message.CustomDuration}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Message.DurationDesc}"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               Margin="0,0,0,16" />
+                    <WrapPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.1SecondBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageShort_Click" />
+                        <Button Style="{StaticResource AntDesignDefaultButton}"
+                                Content="{DynamicResource Message.10SecondBtn}"
+                                Margin="0,0,8,8"
+                                Click="MessageLong_Click" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

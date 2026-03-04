@@ -1,0 +1,405 @@
+<Window x:Class="AntDesign.WPF.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:antd="https://antdesign.wpf/"
+        xmlns:controls="clr-namespace:AntDesign.WPF.Controls;assembly=AntDesign.WPF"
+        mc:Ignorable="d"
+        Title="Ant Design WPF"
+        Width="1280"
+        Height="800"
+        MinWidth="960"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource AntDesignWindow.Borderless}">
+
+    <!-- Title bar content: page title + color swatches + theme/lang toggles -->
+    <controls:WindowHelper.TitleBarContent>
+        <Border Padding="20,0">
+            <DockPanel VerticalAlignment="Center">
+
+                <!-- Page Title -->
+                <TextBlock x:Name="PageTitleText"
+                           DockPanel.Dock="Left"
+                           Text="{DynamicResource Demo.AppTitle}"
+                           VerticalAlignment="Center"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource AntDesign.Brush.Text}" />
+
+                <!-- Right Controls -->
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right">
+
+                    <!-- Color Pickers -->
+                    <TextBlock Text="{DynamicResource Demo.ColorLabel}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,8,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+
+                    <Button Tag="Blue"
+                            Background="#1677FF"
+                            Margin="3,0"
+                            ToolTip="Blue"
+                            AutomationProperties.Name="Set primary color to Blue"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+                    <Button Tag="Green"
+                            Background="#52C41A"
+                            Margin="3,0"
+                            ToolTip="Green"
+                            AutomationProperties.Name="Set primary color to Green"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+                    <Button Tag="Red"
+                            Background="#FF4D4F"
+                            Margin="3,0"
+                            ToolTip="Red"
+                            AutomationProperties.Name="Set primary color to Red"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+                    <Button Tag="Purple"
+                            Background="#722ED1"
+                            Margin="3,0"
+                            ToolTip="Purple"
+                            AutomationProperties.Name="Set primary color to Purple"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+                    <Button Tag="Orange"
+                            Background="#FA8C16"
+                            Margin="3,0"
+                            ToolTip="Orange"
+                            AutomationProperties.Name="Set primary color to Orange"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+                    <Button Tag="Cyan"
+                            Background="#13C2C2"
+                            Margin="3,0,12,0"
+                            ToolTip="Cyan"
+                            AutomationProperties.Name="Set primary color to Cyan"
+                            Template="{StaticResource ColorSwatchTemplate}"
+                            Click="SetPrimaryColor_Click" />
+
+                    <!-- Separator -->
+                    <Border Width="1"
+                            Height="20"
+                            Background="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                            Margin="0,0,12,0" />
+
+                    <!-- Theme Toggle -->
+                    <Button x:Name="ThemeToggleBtn"
+                            Style="{StaticResource ThemeToggleStyle}"
+                            ToolTip="{DynamicResource Demo.ThemeTooltip}"
+                            AutomationProperties.Name="Toggle light/dark theme"
+                            Click="ToggleTheme_Click">
+                        <TextBlock x:Name="ThemeIcon"
+                                   Text="&#9728;"
+                                   FontSize="16"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                    </Button>
+
+                    <!-- Language Toggle -->
+                    <Button x:Name="LangToggleBtn"
+                            Style="{StaticResource ThemeToggleStyle}"
+                            ToolTip="EN / 中文"
+                            AutomationProperties.Name="Toggle language"
+                            Click="ToggleLanguage_Click"
+                            Margin="4,0,0,0">
+                        <TextBlock x:Name="LangIcon"
+                                   Text="{DynamicResource Demo.LanguageToggle}"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </controls:WindowHelper.TitleBarContent>
+
+    <Window.Resources>
+        <!-- Nav item style -->
+        <Style x:Key="NavItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,1,0,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Padding="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Selected indicator bar -->
+                                <Border x:Name="SelectionBar"
+                                        Grid.Column="0"
+                                        Background="{DynamicResource AntDesign.Brush.Primary}"
+                                        Opacity="0"
+                                        CornerRadius="0,2,2,0" />
+                                <!-- Item content -->
+                                <Border x:Name="ContentBorder"
+                                        Grid.Column="1"
+                                        Padding="20,9,12,9"
+                                        Background="Transparent">
+                                    <ContentPresenter />
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ContentBorder" Property="Background"
+                                        Value="{DynamicResource AntDesign.Brush.Fill.Tertiary}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ContentBorder" Property="Background"
+                                        Value="{DynamicResource AntDesign.Brush.Primary.Bg}" />
+                                <Setter TargetName="SelectionBar" Property="Opacity" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Color swatch button template -->
+        <ControlTemplate x:Key="ColorSwatchTemplate" TargetType="Button">
+            <Border x:Name="SwatchBorder"
+                    Background="{TemplateBinding Background}"
+                    Width="22"
+                    Height="22"
+                    CornerRadius="11"
+                    BorderThickness="2"
+                    BorderBrush="Transparent">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="4" Opacity="0.3" />
+                </Border.Effect>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="SwatchBorder" Property="BorderBrush" Value="White" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!-- Theme toggle button style -->
+        <Style x:Key="ThemeToggleStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg"
+                                Background="Transparent"
+                                CornerRadius="18"
+                                Width="36"
+                                Height="36">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background"
+                                        Value="{DynamicResource AntDesign.Brush.Fill.Tertiary}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ================================================================
+             SIDEBAR (below title bar overlay)
+             ================================================================ -->
+        <Border Grid.Column="0"
+                Margin="0,48,0,0"
+                Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                BorderThickness="0,0,1,0">
+            <DockPanel>
+
+                <!-- Sidebar Logo / Header -->
+                <Border DockPanel.Dock="Top"
+                        Padding="20,16,20,12"
+                        BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                        BorderThickness="0,0,0,1">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <!-- Logo mark: vector ant -->
+                            <Border Width="28"
+                                    Height="28"
+                                    CornerRadius="6"
+                                    Background="{DynamicResource AntDesign.Brush.Primary}"
+                                    Margin="0,0,10,0">
+                                <Viewbox Width="18" Height="18" Margin="0,1,0,0">
+                                    <Canvas Width="24" Height="24">
+                                        <!-- Head -->
+                                        <Ellipse Canvas.Left="8" Canvas.Top="1" Width="8" Height="7" Fill="White" />
+                                        <!-- Eyes -->
+                                        <Ellipse Canvas.Left="9.5" Canvas.Top="3" Width="2" Height="2" Fill="{DynamicResource AntDesign.Brush.Primary}" />
+                                        <Ellipse Canvas.Left="12.5" Canvas.Top="3" Width="2" Height="2" Fill="{DynamicResource AntDesign.Brush.Primary}" />
+                                        <!-- Antennae -->
+                                        <Line X1="10" Y1="1.5" X2="7" Y2="0" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <Line X1="14" Y1="1.5" X2="17" Y2="0" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <!-- Thorax -->
+                                        <Ellipse Canvas.Left="9" Canvas.Top="8" Width="6" Height="5" Fill="White" />
+                                        <!-- Abdomen -->
+                                        <Ellipse Canvas.Left="7" Canvas.Top="13" Width="10" Height="9" Fill="White" />
+                                        <!-- Legs left -->
+                                        <Line X1="9" Y1="10" X2="4" Y2="7" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <Line X1="9" Y1="12" X2="3" Y2="12" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <Line X1="9" Y1="15" X2="4" Y2="18" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <!-- Legs right -->
+                                        <Line X1="15" Y1="10" X2="20" Y2="7" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <Line X1="15" Y1="12" X2="21" Y2="12" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                        <Line X1="15" Y1="15" X2="20" Y2="18" Stroke="White" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{DynamicResource Demo.AppTitle}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                                <TextBlock Text="{DynamicResource Demo.Version}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text.Tertiary}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Search Box -->
+                <Border DockPanel.Dock="Top"
+                        Padding="12,10">
+                    <Border Background="{DynamicResource AntDesign.Brush.Fill.Quaternary}"
+                            CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                            BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                            BorderThickness="1"
+                            Padding="8,6">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#128269;"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Tertiary}"
+                                       Margin="0,0,6,0" />
+                            <TextBox x:Name="SearchBox"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Padding="0"
+                                     FontSize="13"
+                                     Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                     CaretBrush="{DynamicResource AntDesign.Brush.Primary}"
+                                     VerticalAlignment="Center"
+                                     MinWidth="160"
+                                     AutomationProperties.Name="Search components"
+                                     TextChanged="SearchBox_TextChanged">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="TextBox">
+                                                    <Grid>
+                                                        <TextBlock x:Name="Placeholder"
+                                                                   Text="{DynamicResource Demo.SearchPlaceholder}"
+                                                                   FontSize="13"
+                                                                   Foreground="{DynamicResource AntDesign.Brush.Text.Quaternary}"
+                                                                   VerticalAlignment="Center"
+                                                                   IsHitTestVisible="False"
+                                                                   Visibility="Collapsed" />
+                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                      VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="Text" Value="">
+                                                            <Setter TargetName="Placeholder" Property="Visibility" Value="Visible" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
+                </Border>
+
+                <!-- Navigation List -->
+                <ScrollViewer DockPanel.Dock="Bottom"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ListBox x:Name="NavList"
+                             SelectionChanged="NavList_SelectionChanged"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             AutomationProperties.Name="Component navigation"
+                             Padding="0,0,0,16"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ItemContainerStyle="{StaticResource NavItemStyle}">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource AntDesign.Brush.Text.Tertiary}"
+                                                   Padding="20,16,20,6"
+                                                   Margin="0" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                                    <Setter Property="Foreground" Value="{DynamicResource AntDesign.Brush.Primary}" />
+                                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- ================================================================
+             MAIN CONTENT AREA (below title bar overlay)
+             ================================================================ -->
+        <antd:TransitionPresenter x:Name="ContentPresenter"
+                                  Grid.Column="1"
+                                  Margin="0,48,0,0"
+                                  TransitionType="Fade"
+                                  Duration="0:0:0.2"
+                                  Background="{DynamicResource AntDesign.Brush.Bg.Layout}" />
+    </Grid>
+</Window>

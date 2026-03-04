@@ -1,0 +1,57 @@
+<UserControl x:Class="EisenhowerMatrix.Views.QuadrantPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:antd="https://antdesign.wpf/"
+             xmlns:views="clr-namespace:EisenhowerMatrix.Views"
+             xmlns:helpers="clr-namespace:EisenhowerMatrix.Helpers"
+             helpers:DragDropHelper.IsDropTarget="True">
+
+    <Border x:Name="DropHighlightBorder" CornerRadius="{DynamicResource AntDesign.CornerRadius.LG}"
+            Background="{DynamicResource AntDesign.Brush.Bg.Container}" Margin="4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0" Padding="12,10"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="+" FontSize="18"
+                            Style="{StaticResource AntDesignTextButton}"
+                            Padding="4,0" Click="AddButton_Click"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="QuadrantColorBar" Width="4" Height="16"
+                                    CornerRadius="2" Margin="0,0,8,0"/>
+                            <TextBlock x:Name="QuadrantTitle"
+                                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                            <antd:Badge x:Name="TaskCountBadge" Count="0" Margin="8,0,0,0">
+                                <Border Width="1" Height="1"/>
+                            </antd:Badge>
+                        </StackPanel>
+                        <TextBlock x:Name="ActionHintText"
+                                   FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                   Margin="12,2,0,0"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Task List -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"
+                          Padding="8,6">
+                <ItemsControl x:Name="TaskList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <views:TaskCard/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

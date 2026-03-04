@@ -1,0 +1,90 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.TimelinePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:antd="https://antdesign.wpf/"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Timeline.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Timeline.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Basic Timeline -->
+            <TextBlock Text="{DynamicResource Timeline.Basic}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <antd:Timeline>
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item1}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item2}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item3}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item4}" />
+                </antd:Timeline>
+            </Border>
+
+            <!-- Section: Timeline with Colors -->
+            <TextBlock Text="{DynamicResource Timeline.WithColors}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <antd:Timeline>
+                    <antd:TimelineItem Color="#52C41A" Content="{DynamicResource Timeline.Item1}" />
+                    <antd:TimelineItem Color="#52C41A" Content="{DynamicResource Timeline.Item2}" />
+                    <antd:TimelineItem Color="#FF4D4F" Content="{DynamicResource Timeline.Item3}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item4}" />
+                    <antd:TimelineItem Color="#BFBFBF" Content="{DynamicResource Timeline.Item1}" />
+                    <antd:TimelineItem Color="#BFBFBF" Content="{DynamicResource Timeline.Item3}" />
+                </antd:Timeline>
+            </Border>
+
+            <!-- Section: Pending Timeline -->
+            <TextBlock Text="{DynamicResource Timeline.Pending}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <antd:Timeline Pending="True">
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item1}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item2}" />
+                    <antd:TimelineItem Content="{DynamicResource Timeline.Item3}" />
+                </antd:Timeline>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

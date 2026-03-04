@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>AntDesign.WPF</RootNamespace>
+    <AssemblyName>AntDesign.WPF</AssemblyName>
+    <Description>Ant Design style control library for WPF. Provides 30+ beautifully themed controls, a complete design token system, light/dark theme switching, and enterprise-grade accessibility support.</Description>
+    <PackageId>AntDesign.WPF</PackageId>
+    <PackageTags>wpf;antdesign;controls;ui;theme;material;design-system;dark-mode;accessibility</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AntDesign.WPF.Colors\AntDesign.WPF.Colors.csproj" />
+  </ItemGroup>
+
+</Project>

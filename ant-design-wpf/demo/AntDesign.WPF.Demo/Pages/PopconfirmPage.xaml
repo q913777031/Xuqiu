@@ -1,0 +1,85 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.PopconfirmPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:antd="https://antdesign.wpf/"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Popconfirm.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Popconfirm.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Basic -->
+            <TextBlock Text="{DynamicResource Popconfirm.Basic}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Popconfirm.ClickToSee}"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               Margin="0,0,0,16" />
+                    <WrapPanel Orientation="Horizontal">
+                        <antd:Popconfirm Title="{DynamicResource Popconfirm.DeleteConfirm}"
+                                         Confirmed="OnDeleteConfirmed"
+                                         Margin="0,0,16,8">
+                            <Button Style="{StaticResource AntDesignDangerButton}"
+                                    Content="{DynamicResource Popconfirm.Delete}" />
+                        </antd:Popconfirm>
+
+                        <antd:Popconfirm Title="{DynamicResource Popconfirm.ProceedAction}"
+                                         OkText="{DynamicResource Popconfirm.Yes}"
+                                         CancelText="{DynamicResource Popconfirm.No}"
+                                         Margin="0,0,16,8">
+                            <Button Style="{StaticResource AntDesignPrimaryButton}"
+                                    Content="{DynamicResource Popconfirm.ConfirmAction}" />
+                        </antd:Popconfirm>
+
+                        <antd:Popconfirm Title="{DynamicResource Popconfirm.AreYouSure}"
+                                         OkType="Danger"
+                                         OkText="{DynamicResource Popconfirm.Delete}"
+                                         CancelText="{DynamicResource Popconfirm.Cancel}"
+                                         Margin="0,0,0,8">
+                            <Button Style="{StaticResource AntDesignDefaultButton}"
+                                    Content="{DynamicResource Popconfirm.DangerConfirm}" />
+                        </antd:Popconfirm>
+                    </WrapPanel>
+                    <TextBlock x:Name="StatusText"
+                               Text=""
+                               Foreground="{DynamicResource AntDesign.Brush.Success}"
+                               Margin="0,12,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Code: Basic -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#C678DD">&lt;antd:Popconfirm</Run> <Run Foreground="#D19A66">Title</Run>=<Run Foreground="#98C379">"Are you sure?"</Run>
+                  <Run Foreground="#D19A66">OkText</Run>=<Run Foreground="#98C379">"Yes"</Run>
+                  <Run Foreground="#D19A66">CancelText</Run>=<Run Foreground="#98C379">"No"</Run>
+                  <Run Foreground="#D19A66">Confirmed</Run>=<Run Foreground="#98C379">"OnConfirmed"</Run><Run Foreground="#C678DD">&gt;</Run>
+    <Run Foreground="#C678DD">&lt;Button</Run> <Run Foreground="#D19A66">Content</Run>=<Run Foreground="#98C379">"Delete"</Run> <Run Foreground="#C678DD">/&gt;</Run>
+<Run Foreground="#C678DD">&lt;/antd:Popconfirm&gt;</Run></TextBlock>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

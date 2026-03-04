@@ -1,0 +1,41 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Company>AntDesign.WPF Contributors</Company>
+    <Copyright>Copyright (c) 2026 AntDesign.WPF Contributors</Copyright>
+    <Version>1.0.0-preview.1</Version>
+    <Authors>AntDesign.WPF Contributors</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/AntDesign-WPF/AntDesign.WPF</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AntDesign-WPF/AntDesign.WPF</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: Missing XML docs (lib has GenerateDocumentationFile) -->
+    <!-- NETSDK1057: .NET preview SDK info message -->
+    <NoWarn>$(NoWarn);CS1591;NETSDK1057</NoWarn>
+    <!-- SourceLink warnings when no git remote is configured (local dev) -->
+    <SourceLinkUrlInitializerTargets />
+    <WarnOnMissingSourceLink>false</WarnOnMissingSourceLink>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+
+    <!-- Deterministic builds for reproducibility -->
+    <Deterministic>true</Deterministic>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- WPF is not trim-safe; explicitly opt out -->
+    <PublishTrimmed>false</PublishTrimmed>
+
+    <!-- Package metadata -->
+    <PackageTags>wpf;antdesign;ant-design;ui;controls;theme;material;xaml</PackageTags>
+  </PropertyGroup>
+
+  <!-- SourceLink for NuGet symbol packages and debugger step-into (CI only) -->
+  <ItemGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

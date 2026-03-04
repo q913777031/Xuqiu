@@ -1,0 +1,116 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.SwitchPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:antd="https://antdesign.wpf/"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Switch.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Switch.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Basic Switch -->
+            <TextBlock Text="{DynamicResource Switch.Basic}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <antd:AntSwitch IsChecked="True" Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.DefaultChecked}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <antd:AntSwitch IsChecked="False" Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.DefaultUnchecked}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <antd:AntSwitch IsEnabled="False" Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.Disabled}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Section: Small Switch -->
+            <TextBlock Text="{DynamicResource Switch.Small}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <antd:AntSwitch Size="Small" IsChecked="True" Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.SmallChecked}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <antd:AntSwitch Size="Small" IsChecked="False" Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.SmallUnchecked}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Section: Switch with Content -->
+            <TextBlock Text="{DynamicResource Switch.WithText}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <antd:AntSwitch IsChecked="True"
+                                        CheckedContent="{DynamicResource Switch.On}"
+                                        UncheckedContent="{DynamicResource Switch.Off}"
+                                        Margin="0,0,12,0" />
+                        <TextBlock Text="{DynamicResource Switch.OnOffLabel}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

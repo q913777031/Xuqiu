@@ -1,0 +1,121 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.TabsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Tabs.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Tabs.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Basic Tabs -->
+            <TextBlock Text="{DynamicResource Tabs.BasicTabs}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="0"
+                    Margin="0,0,0,24">
+                <TabControl>
+                    <TabItem Header="{DynamicResource Tabs.Tab1}">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.Content1}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource Tabs.Tab2}">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.Content2}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource Tabs.Tab3}">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.Content3}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}" />
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="{DynamicResource Tabs.Disabled}" IsEnabled="False">
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.DisabledTab}" />
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Border>
+
+            <!-- Section: Tabs with Icons -->
+            <TextBlock Text="{DynamicResource Tabs.RichContent}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="0"
+                    Margin="0,0,0,24">
+                <TabControl>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource Tabs.Home}" FontWeight="SemiBold" />
+                        </TabItem.Header>
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.HomeWelcome}"
+                                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                       Margin="0,0,0,8" />
+                            <TextBlock Text="{DynamicResource Tabs.HomeDesc}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource Tabs.Settings}" FontWeight="SemiBold" />
+                        </TabItem.Header>
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.SettingsTitle}"
+                                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                       Margin="0,0,0,8" />
+                            <TextBlock Text="{DynamicResource Tabs.SettingsDesc}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <TextBlock Text="{DynamicResource Tabs.Profile}" FontWeight="SemiBold" />
+                        </TabItem.Header>
+                        <StackPanel Margin="16">
+                            <TextBlock Text="{DynamicResource Tabs.ProfileTitle}"
+                                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                       Margin="0,0,0,8" />
+                            <TextBlock Text="{DynamicResource Tabs.ProfileDesc}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}" />
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

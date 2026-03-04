@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="9.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="FreeSql" Version="3.5.306" />
+    <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.5.306" />
+    <PackageReference Include="NLog" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ant-design-wpf\src\AntDesign.WPF\AntDesign.WPF.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,220 @@
+<Window x:Class="EisenhowerMatrix.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:antd="https://antdesign.wpf/"
+        xmlns:views="clr-namespace:EisenhowerMatrix.Views"
+        xmlns:models="clr-namespace:EisenhowerMatrix.Models"
+        xmlns:converters="clr-namespace:EisenhowerMatrix.Converters"
+        Title="艾森豪威尔四象限任务管理"
+        Width="1200" Height="800"
+        MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AntDesign.Brush.Bg.Layout}">
+
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:StatusToColorConverter x:Key="StatusToColor"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Statistics Bar -->
+        <Border Grid.Row="0" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                Padding="16,12"
+                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!-- Total -->
+                <antd:Card Size="Small" Bordered="False" Margin="4,0">
+                    <antd:Card.Title>
+                        <TextBlock Text="总计" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                    </antd:Card.Title>
+                    <TextBlock Text="{Binding TotalCount}" FontSize="24" FontWeight="Bold"
+                               Foreground="{DynamicResource AntDesign.Brush.Text}"/>
+                </antd:Card>
+                <!-- InProgress -->
+                <antd:Card Size="Small" Bordered="False" Margin="4,0">
+                    <antd:Card.Title>
+                        <StackPanel Orientation="Horizontal">
+                            <antd:Badge Dot="True" Status="Processing" Margin="0,0,6,0">
+                                <Border Width="1" Height="1"/>
+                            </antd:Badge>
+                            <TextBlock Text="进行中" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                        </StackPanel>
+                    </antd:Card.Title>
+                    <TextBlock Text="{Binding InProgressCount}" FontSize="24" FontWeight="Bold"
+                               Foreground="#3B82F6"/>
+                </antd:Card>
+                <!-- Completed -->
+                <antd:Card Size="Small" Bordered="False" Margin="4,0">
+                    <antd:Card.Title>
+                        <StackPanel Orientation="Horizontal">
+                            <antd:Badge Dot="True" Status="Success" Margin="0,0,6,0">
+                                <Border Width="1" Height="1"/>
+                            </antd:Badge>
+                            <TextBlock Text="已完成" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                        </StackPanel>
+                    </antd:Card.Title>
+                    <TextBlock Text="{Binding CompletedCount}" FontSize="24" FontWeight="Bold"
+                               Foreground="#10B981"/>
+                </antd:Card>
+                <!-- Blocked -->
+                <antd:Card Size="Small" Bordered="False" Margin="4,0">
+                    <antd:Card.Title>
+                        <StackPanel Orientation="Horizontal">
+                            <antd:Badge Dot="True" Status="Error" Margin="0,0,6,0">
+                                <Border Width="1" Height="1"/>
+                            </antd:Badge>
+                            <TextBlock Text="阻塞" FontSize="{DynamicResource AntDesign.FontSize.SM}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"/>
+                        </StackPanel>
+                    </antd:Card.Title>
+                    <TextBlock Text="{Binding BlockedCount}" FontSize="24" FontWeight="Bold"
+                               Foreground="#EF4444"/>
+                </antd:Card>
+            </StackPanel>
+        </Border>
+
+        <!-- Row 1: Filter Bar + View Toggle -->
+        <Border Grid.Row="1" Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                Padding="16,8"
+                BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}" BorderThickness="0,0,0,1">
+            <DockPanel>
+                <!-- View Toggle -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="8,0,0,0">
+                    <Button Style="{StaticResource AntDesignDefaultButton}"
+                            Content="&#x2B1A; 四象限 / &#x2630; 列表"
+                            Command="{Binding ToggleViewCommand}"/>
+                </StackPanel>
+
+                <!-- Filter Buttons -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="筛选:" VerticalAlignment="Center" Margin="0,0,8,0"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               FontSize="{DynamicResource AntDesign.FontSize}"/>
+                    <Button Content="全部" Style="{StaticResource AntDesignDefaultButton}"
+                            Margin="0,0,4,0"
+                            Command="{Binding SetFilterCommand}" CommandParameter=""/>
+                    <Button Content="未开始" Style="{StaticResource AntDesignDefaultButton}"
+                            Margin="0,0,4,0"
+                            Command="{Binding SetFilterCommand}" CommandParameter="NotStarted"/>
+                    <Button Content="进行中" Style="{StaticResource AntDesignPrimaryButton}"
+                            Margin="0,0,4,0"
+                            Command="{Binding SetFilterCommand}" CommandParameter="InProgress"/>
+                    <Button Content="已完成" Style="{StaticResource AntDesignDefaultButton}"
+                            Margin="0,0,4,0"
+                            Command="{Binding SetFilterCommand}" CommandParameter="Completed"/>
+                    <Button Content="阻塞" Style="{StaticResource AntDesignDangerDefaultButton}"
+                            Margin="0,0,4,0"
+                            Command="{Binding SetFilterCommand}" CommandParameter="Blocked"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Row 2: Content Area -->
+        <Grid Grid.Row="2" Margin="8">
+
+            <!-- Quadrant View -->
+            <Grid Visibility="{Binding IsQuadrantView, Converter={StaticResource BoolToVis}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <views:QuadrantPanel Grid.Row="0" Grid.Column="0"
+                                     Quadrant="Q1"
+                                     TasksSource="{Binding Q1Tasks}"
+                                     TaskCount="{Binding Q1Count}"/>
+
+                <views:QuadrantPanel Grid.Row="0" Grid.Column="1"
+                                     Quadrant="Q2"
+                                     TasksSource="{Binding Q2Tasks}"
+                                     TaskCount="{Binding Q2Count}"/>
+
+                <views:QuadrantPanel Grid.Row="1" Grid.Column="0"
+                                     Quadrant="Q3"
+                                     TasksSource="{Binding Q3Tasks}"
+                                     TaskCount="{Binding Q3Count}"/>
+
+                <views:QuadrantPanel Grid.Row="1" Grid.Column="1"
+                                     Quadrant="Q4"
+                                     TasksSource="{Binding Q4Tasks}"
+                                     TaskCount="{Binding Q4Count}"/>
+            </Grid>
+
+            <!-- List View -->
+            <antd:Card Visibility="{Binding IsQuadrantView, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                <DataGrid ItemsSource="{Binding AllTasks}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="False"
+                          SelectionMode="Single"
+                          GridLinesVisibility="Horizontal"
+                          BorderThickness="0"
+                          FontSize="{DynamicResource AntDesign.FontSize}"
+                          HeadersVisibility="Column">
+
+                    <DataGrid.Columns>
+                        <!-- Quadrant -->
+                        <DataGridTextColumn Header="象限" Binding="{Binding Quadrant}" Width="100" IsReadOnly="True"/>
+
+                        <!-- Title -->
+                        <DataGridTextColumn Header="标题" Binding="{Binding Title}" Width="*" IsReadOnly="True"/>
+
+                        <!-- Owner -->
+                        <DataGridTextColumn Header="负责人" Binding="{Binding Owner}" Width="100" IsReadOnly="True"/>
+
+                        <!-- Estimate -->
+                        <DataGridTextColumn Header="工期" Binding="{Binding Estimate}" Width="80" IsReadOnly="True"/>
+
+                        <!-- Status (editable combo) -->
+                        <DataGridTemplateColumn Header="状态" Width="110">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="Tag"
+                                              BorderThickness="0" Background="Transparent"
+                                              SelectionChanged="StatusCombo_SelectionChanged">
+                                        <ComboBoxItem Content="未开始" Tag="{x:Static models:TaskItemStatus.NotStarted}"/>
+                                        <ComboBoxItem Content="进行中" Tag="{x:Static models:TaskItemStatus.InProgress}"/>
+                                        <ComboBoxItem Content="已完成" Tag="{x:Static models:TaskItemStatus.Completed}"/>
+                                        <ComboBoxItem Content="阻塞" Tag="{x:Static models:TaskItemStatus.Blocked}"/>
+                                    </ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Blocker -->
+                        <DataGridTextColumn Header="阻塞点" Binding="{Binding Blocker}" Width="150" IsReadOnly="True"/>
+
+                        <!-- Actions -->
+                        <DataGridTemplateColumn Header="操作" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="&#x270E;" Style="{StaticResource IconButtonStyle}"
+                                                Command="{Binding EditCommand}" Opacity="1"/>
+                                        <Button Content="&#x2716;" Style="{StaticResource IconButtonStyle}"
+                                                Command="{Binding DeleteCommand}" Foreground="#EF4444" Opacity="1"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </antd:Card>
+        </Grid>
+    </Grid>
+</Window>

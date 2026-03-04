@@ -1,0 +1,147 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.AlertPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:antd="https://antdesign.wpf/"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Alert.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Alert.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Section: Basic Alerts -->
+            <TextBlock Text="{DynamicResource Alert.BasicTypes}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <antd:Alert Type="Success"
+                                Message="{DynamicResource Alert.SuccessTips}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Info"
+                                Message="{DynamicResource Alert.InfoNotes}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Warning"
+                                Message="{DynamicResource Alert.Warning}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Error"
+                                Message="{DynamicResource Alert.Error}"
+                                Margin="0,0,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Code: Basic Alerts -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Success"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Success Tips"</Run> <Run Foreground="#C678DD">/&gt;</Run>
+<Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Info"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Informational Notes"</Run> <Run Foreground="#C678DD">/&gt;</Run>
+<Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Warning"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Warning"</Run> <Run Foreground="#C678DD">/&gt;</Run>
+<Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Error"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Error"</Run> <Run Foreground="#C678DD">/&gt;</Run></TextBlock>
+            </Expander>
+
+            <!-- Section: With Description -->
+            <TextBlock Text="{DynamicResource Alert.WithDesc}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <antd:Alert Type="Success"
+                                Message="{DynamicResource Alert.SuccessTips}"
+                                Description="{DynamicResource Alert.SuccessDesc}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Info"
+                                Message="{DynamicResource Alert.InfoNotes}"
+                                Description="{DynamicResource Alert.InfoDesc}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Warning"
+                                Message="{DynamicResource Alert.Warning}"
+                                Description="{DynamicResource Alert.WarningDesc}"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Error"
+                                Message="{DynamicResource Alert.Error}"
+                                Description="{DynamicResource Alert.ErrorDesc}"
+                                Margin="0,0,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Code: With Description -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Success"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Success Tips"</Run>
+             <Run Foreground="#D19A66">Description</Run>=<Run Foreground="#98C379">"Detailed description..."</Run> <Run Foreground="#C678DD">/&gt;</Run></TextBlock>
+            </Expander>
+
+            <!-- Section: Closable Alerts -->
+            <TextBlock Text="{DynamicResource Alert.Closable}"
+                       FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,16" />
+
+            <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                    BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                    Padding="24"
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Alert.ClosableDesc}"
+                               Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                               Margin="0,0,0,12" />
+                    <antd:Alert Type="Info"
+                                Message="{DynamicResource Alert.ClosableAlert}"
+                                Closable="True"
+                                Margin="0,0,0,12" />
+                    <antd:Alert Type="Warning"
+                                Message="{DynamicResource Alert.WarningWithDesc}"
+                                Description="{DynamicResource Alert.ClosableWarningDesc}"
+                                Closable="True"
+                                Margin="0,0,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Code: Closable Alerts -->
+            <Expander Style="{StaticResource CodeBoxExpander}">
+                <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Info"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Closable Alert"</Run>
+             <Run Foreground="#D19A66">Closable</Run>=<Run Foreground="#98C379">"True"</Run> <Run Foreground="#C678DD">/&gt;</Run>
+<Run Foreground="#C678DD">&lt;antd:Alert</Run> <Run Foreground="#D19A66">Type</Run>=<Run Foreground="#98C379">"Warning"</Run>
+             <Run Foreground="#D19A66">Message</Run>=<Run Foreground="#98C379">"Warning with Description"</Run>
+             <Run Foreground="#D19A66">Description</Run>=<Run Foreground="#98C379">"You can close this warning."</Run>
+             <Run Foreground="#D19A66">Closable</Run>=<Run Foreground="#98C379">"True"</Run> <Run Foreground="#C678DD">/&gt;</Run></TextBlock>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,107 @@
+<UserControl x:Class="AntDesign.WPF.Demo.Pages.DrawerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:antd="https://antdesign.wpf/"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="600">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="800">
+
+            <!-- Page Title -->
+            <TextBlock Text="{DynamicResource Drawer.Title}"
+                       FontSize="{DynamicResource AntDesign.FontSize.H3}"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource AntDesign.Brush.Text}"
+                       Margin="0,0,0,8" />
+            <TextBlock Text="{DynamicResource Drawer.Desc}"
+                       FontSize="{DynamicResource AntDesign.FontSize}"
+                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                       Margin="0,0,0,32" />
+
+            <!-- Drawer wrapping page content -->
+            <antd:Drawer x:Name="DemoDrawer"
+                         Title="{DynamicResource Drawer.DrawerTitle}"
+                         DrawerWidth="378"
+                         DrawerHeight="300">
+
+                <antd:Drawer.DrawerContent>
+                    <StackPanel Margin="16">
+                        <TextBlock Text="{DynamicResource Drawer.ContentTitle}"
+                                   FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text}"
+                                   Margin="0,0,0,12" />
+                        <TextBlock Text="{DynamicResource Drawer.Content1}"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,8" />
+                        <TextBlock Text="{DynamicResource Drawer.Content2}"
+                                   Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </antd:Drawer.DrawerContent>
+
+                <StackPanel>
+                    <!-- Section: Placement -->
+                    <TextBlock Text="{DynamicResource Drawer.Placement}"
+                               FontSize="{DynamicResource AntDesign.FontSize.LG}"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource AntDesign.Brush.Text}"
+                               Margin="0,0,0,16" />
+
+                    <Border Background="{DynamicResource AntDesign.Brush.Bg.Container}"
+                            BorderBrush="{DynamicResource AntDesign.Brush.Border.Secondary}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource AntDesign.CornerRadius}"
+                            Padding="24"
+                            Margin="0,0,0,24">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource Drawer.PlacementDesc}"
+                                       Foreground="{DynamicResource AntDesign.Brush.Text.Secondary}"
+                                       Margin="0,0,0,16" />
+                            <WrapPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource AntDesignPrimaryButton}"
+                                        Content="{DynamicResource Drawer.Right}"
+                                        Margin="0,0,8,8"
+                                        Click="OpenRightDrawer_Click" />
+                                <Button Style="{StaticResource AntDesignDefaultButton}"
+                                        Content="{DynamicResource Drawer.Left}"
+                                        Margin="0,0,8,8"
+                                        Click="OpenLeftDrawer_Click" />
+                                <Button Style="{StaticResource AntDesignDefaultButton}"
+                                        Content="{DynamicResource Drawer.Top}"
+                                        Margin="0,0,8,8"
+                                        Click="OpenTopDrawer_Click" />
+                                <Button Style="{StaticResource AntDesignDefaultButton}"
+                                        Content="{DynamicResource Drawer.Bottom}"
+                                        Margin="0,0,8,8"
+                                        Click="OpenBottomDrawer_Click" />
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Code: Drawer -->
+                    <Expander Style="{StaticResource CodeBoxExpander}">
+                        <TextBlock FontFamily="Consolas" FontSize="12" Foreground="#ABB2BF" xml:space="preserve"><Run Foreground="#C678DD">&lt;antd:Drawer</Run> <Run Foreground="#D19A66">x:Name</Run>=<Run Foreground="#98C379">"DemoDrawer"</Run>
+              <Run Foreground="#D19A66">Title</Run>=<Run Foreground="#98C379">"Drawer Title"</Run>
+              <Run Foreground="#D19A66">Placement</Run>=<Run Foreground="#98C379">"Right"</Run>
+              <Run Foreground="#D19A66">DrawerWidth</Run>=<Run Foreground="#98C379">"378"</Run><Run Foreground="#C678DD">&gt;</Run>
+    <Run Foreground="#C678DD">&lt;antd:Drawer.DrawerContent&gt;</Run>
+        <Run Foreground="#C678DD">&lt;TextBlock</Run> <Run Foreground="#D19A66">Text</Run>=<Run Foreground="#98C379">"Drawer content here."</Run> <Run Foreground="#C678DD">/&gt;</Run>
+    <Run Foreground="#C678DD">&lt;/antd:Drawer.DrawerContent&gt;</Run>
+    <Run Foreground="#5C6370">&lt;!-- Page content here --&gt;</Run>
+<Run Foreground="#C678DD">&lt;/antd:Drawer&gt;</Run>
+
+<Run Foreground="#5C6370">// Code-behind:</Run>
+<Run Foreground="#C678DD">DemoDrawer</Run>.IsOpen = <Run Foreground="#D19A66">true</Run>;</TextBlock>
+                    </Expander>
+
+                </StackPanel>
+            </antd:Drawer>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

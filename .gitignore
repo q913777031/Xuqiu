@@ -1,0 +1,29 @@
+## .NET / Visual Studio
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+*.DotSettings.user
+
+## SQLite database
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+## Logs
+logs/
+
+## NuGet
+*.nupkg
+packages/
+
+## IDE
+.idea/
+.vscode/
+
+## OS
+Thumbs.db
+Desktop.ini
+.DS_Store
